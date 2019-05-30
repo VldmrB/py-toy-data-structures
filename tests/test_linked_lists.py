@@ -3,10 +3,10 @@ from structures.linked_lists import SingleNode
 # from hypothesis.strategies import text
 
 
-def test_single_node_creation(value=5):
-    assert SingleNode(value).value == value
+class TestSingleNode:
+    def test_node_creation(self, value=5):
+        assert SingleNode(value).value == value
 
-
-def test_single_node_str_descriptor_output(value=5):
-    node = SingleNode(value)
-    assert str(node) == 'Node(' + str(value) + ') --> ' + str(None)
+    def test_node_str_descriptor_output(self, value=5):
+        node = SingleNode(value)
+        assert str(node) == 'Node(' + str(value) + ') --> ' + str(None)
