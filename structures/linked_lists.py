@@ -60,13 +60,13 @@ class Single:
 
     def pretty_find(self, value):  # worst case: O(n)
         current_element = self.head
-        count = 0
+        _index = 0
         while current_element:
             if current_element.value == value:
-                print('Index[' + str(count) + ']: ' + str(current_element))
+                print('Index[' + str(_index) + ']: ' + str(current_element))
                 return
             current_element = current_element.next
-            count += 1
+            _index += 1
         else:
             value_desc = self._raise_value_error(value)
             raise ValueError(f'{value_desc} not in list')
