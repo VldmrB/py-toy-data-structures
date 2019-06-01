@@ -10,8 +10,8 @@ class SingleNode:
 
     def __str__(self):
         _next = (str(self.next) if not self.next
-                 else 'Node(' + str(self.next.value) + ')')
-        return self.__repr__() + ' --> ' + _next
+                 else 'SingleNode(' + str(self.next.value) + ')')
+        return f'{self.__repr__()} --> {_next}'
 
 
 class Single:
@@ -67,7 +67,7 @@ class Single:
         _index = 0
         while current_element:
             if current_element.value == value:
-                print('Index[' + str(_index) + ']: ' + str(current_element))
+                print(f'Index[{_index}]: {current_element}')
                 return
             current_element = current_element.next
             _index += 1
