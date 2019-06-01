@@ -4,10 +4,14 @@ class SingleNode:
         self.value = value
         self.next = None
 
+    def __repr__(self):
+        value = f'{self.value!r}' if isinstance(self.value, str) else self.value
+        return f'SingleNode({value})'
+
     def __str__(self):
         _next = (str(self.next) if not self.next
                  else 'Node(' + str(self.next.value) + ')')
-        return 'Node(' + str(self.value) + ') --> ' + _next
+        return self.__repr__() + ' --> ' + _next
 
 
 class Single:
