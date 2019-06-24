@@ -1,3 +1,6 @@
+from typing import Union, Any
+
+
 class SingleNode:
 
     def __init__(self, value):
@@ -6,32 +9,49 @@ class SingleNode:
 
     def __repr__(self):
         value = f'{self.value!r}' if isinstance(self.value, str) else self.value
-        return f'SingleNode({value})'
+        return f'{self.__class__.__name__}({value})'
 
     def __str__(self):
-        _next = (str(self.next) if not self.next
-                 else 'SingleNode(' + str(self.next.value) + ')')
-        return f'{self.__repr__()} --> {_next}'
+        _next = self.next
+        _next_repr = _next if not _next else repr(self.next)
+        return f'{self.__repr__()} --> {_next_repr}'
+
+    def __eq__(self, node):
+        if isinstance(node, SingleNode):
+            if node.value == self.value:
+                return True
+        return False
 
 
 class Single:
 
-    def __init__(self, head_value=None):
-        if head_value is not None:
-            self.head = SingleNode(head_value)
-        else:
-            self.head = head_value
+    def __init__(self, values: Union[list, tuple, SingleNode, Any] = None):
+        self.head = None
+        if values is not None:
+            if isinstance(values, SingleNode):
+                self.head = values
+            elif isinstance(values, (list, tuple)):
+                for i in range(len(values) - 1, -1, -1):
+                    self.insert(values[i])
+            else:
+                self.head = SingleNode(values)
 
     def __bool__(self):
         return self.head is not None
 
-    def __str__(self):  # O(n)
+    def __repr__(self):
         elements = []
         current_element = self.head
         while current_element:
-            elements.append(current_element.value)
+            if isinstance(current_element.value, Single):
+                elements.append(current_element.value.__str__())
+            else:
+                elements.append(current_element.value)
             current_element = current_element.next
-        return str(elements)
+        return f'{self.__class__.__name__}({elements})'
+
+    def __str__(self):  # O(n)
+        return self.__repr__()
 
     def __len__(self):
         length = 0
@@ -191,3 +211,134 @@ class Single:
             previous_element.next = None
         else:
             self.head = None
+
+    def reverse(self):
+        current_element = self.head
+        previous_element = None
+        while current_element:
+            next_element = current_element.next
+            current_element.next = previous_element
+            previous_element = current_element
+            current_element = next_element
+        self.head = previous_element
+
+    def remove_all_nodes_by_value(self, val):
+        current_element = self.head
+        previous_element = None
+        while current_element:
+            if current_element.value == val:
+                if previous_element:
+                    previous_element.next = current_element.next
+                else:
+                    self.head = current_element.next
+            else:
+                previous_element = current_element
+            current_element = current_element.next
+        return self.head
+
+    def mergesort(self):
+        """
+        Inplace Mergesort algorithm for a singly-linked list
+        O(N log N) time, O(1) space
+
+        Translation of listsort() by jfs from SO; from C to Python
+
+        https://gist.github.com/zed/5651186
+        http://www.chiark.greenend.org.uk/~sgtatham/algorithms/listsort.html
+        """
+        if not self.head:
+            return
+        head = self.head  # used for marking the start of the 'left' list
+        # as well as referencing the first node in the fully sorted list
+        l_size = 1  # lists of size 1 are sorted first. After the whole list is
+        # iterated over, size is increased, much like in mergesort used for
+        # arrays. That is, if the orginal list length > 2
+
+        while True:  # responsible for increasing sizes of lists to be
+            # 'merged'
+            l1 = head
+            head, tail = None, None  # reset the pointers from the previous loop
+            merge_count = 0  # for knowing when to break the enclosing loop
+
+            while l1:  # sets starting points of left and right lists,
+                # 'merges' them
+                merge_count += 1  # if <= 1, this was the final merge of the
+                # two halves of the whole list
+
+                l2 = l1  # below lines set the start of the right list l_size
+                # away from the start of the left list
+
+                l1_len = 0
+                l2_len = l_size
+                while l1_len < l_size:
+                    if not l2:
+                        break
+                    l2 = l2.next
+                    l1_len += 1
+
+                while l1_len or (l2_len and l2):
+                    if not l1_len:
+                        current, l2 = l2, l2.next
+                        l2_len -= 1
+                    elif not l2_len or not l2:
+                        current, l1 = l1, l1.next
+                        l1_len -= 1
+                    elif l1.value <= l2.value:
+                        current, l1 = l1, l1.next
+                        l1_len -= 1
+                    else:
+                        current, l2 = l2, l2.next
+                        l2_len -= 1
+
+                    if tail:
+                        tail.next = current
+                    else:
+                        head = current  # used as start of the left list in
+                        # the next loop, or if this is the final one, points
+                        # to the actual start of the newly sorted list
+                    tail = current  # moves the tail pointer to the current el
+
+                l1 = l2  # moves the pointer of the start of left list to the
+                # node just after the last one in the right list
+
+            tail.next = None  # prevents a potential closed loop because of
+            # two nodes having each other as .next
+            if merge_count <= 1:
+                self.head = head
+                return
+            else:
+                l_size *= 2
+
+    def merge_sorted_lists(self, l2: 'Single'):
+        if self is None:
+            return l2
+        if l2 is None:
+            return self
+
+        cur1, cur2 = self.head, l2.head
+
+        if cur1.value <= cur2.value:
+            result = self.head
+            cur1 = self.head.next
+        else:
+            result = l2.head
+            cur2 = cur2.next
+
+        temp = result
+
+        while cur1 and cur2:
+            if cur1.value <= cur2.value:
+                temp.next = cur1
+                cur1 = cur1.next
+            else:
+                temp.next = cur2
+                cur2 = cur2.next
+
+            temp = temp.next
+
+        if not cur1:
+            temp.next = cur2
+        else:
+            temp.next = cur1
+
+        return result
