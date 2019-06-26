@@ -26,6 +26,11 @@ class SingleNode:
 class Single:
 
     def __init__(self, values: Union[list, tuple, SingleNode, Any] = None):
+        """
+        :param values: lists/tuples will be iterated over, with each element
+        getting added as a separate node. To add a node with a list/tuple as a
+        value, pass in a node with its value set to one
+        """
         self.head = None
         if values is not None:
             if isinstance(values, SingleNode):
@@ -49,9 +54,6 @@ class Single:
                 elements.append(current_element.value)
             current_element = current_element.next
         return f'{self.__class__.__name__}({elements})'
-
-    def __str__(self):  # O(n)
-        return self.__repr__()
 
     def __len__(self):
         length = 0
@@ -81,19 +83,6 @@ class Single:
                 return True
             current_element = current_element.next
         return False
-
-    def pretty_find(self, value):  # worst case: O(n)
-        current_element = self.head
-        _index = 0
-        while current_element:
-            if current_element.value == value:
-                print(f'Index[{_index}]: {current_element}')
-                return
-            current_element = current_element.next
-            _index += 1
-        else:
-            value_desc = self._raise_value_error(value)
-            raise ValueError(f'{value_desc} not in list')
 
     def index(self, value, start: int = None, stop: int = None):
         current_element = self.head
