@@ -307,10 +307,10 @@ class Single:
 
     def merge_sorted_lists(self, l2: 'Single'):
         if not self:
-            return l2
+            self.head = l2.head
+            return
         if not l2:
-            return self
-
+            return
         cur1, cur2 = self.head, l2.head
 
         if cur1.value <= cur2.value:
