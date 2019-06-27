@@ -1,5 +1,10 @@
 from typing import Union, Any
 
+"""
+Linked list and nodes implementations.
+To an extent, syntax and logic mirrors that of Python's list.
+"""
+
 
 class SingleNode:
 
@@ -37,14 +42,14 @@ class Single:
                 self.head = values
             elif isinstance(values, (list, tuple)):
                 for i in range(len(values) - 1, -1, -1):
-                    self.insert(values[i])
+                    self.prepend(values[i])
             else:
                 self.head = SingleNode(values)
 
     def __bool__(self):
         return self.head is not None
 
-    def __repr__(self):
+    def _list_elements(self):
         elements = []
         current_element = self.head
         while current_element:
@@ -53,7 +58,10 @@ class Single:
             else:
                 elements.append(current_element.value)
             current_element = current_element.next
-        return f'{self.__class__.__name__}({elements})'
+        return elements
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self._list_elements()})'
 
     def __len__(self):
         length = 0
@@ -65,14 +73,15 @@ class Single:
             length += 1
         return length
 
+    def __eq__(self, other):
+        if isinstance(other, Single):
+            if self._list_elements() == other._list_elements():
+                return True
+
     @staticmethod
     def _raise_value_error(value):
         value_desc = value if not isinstance(value, str) else f'{value!r}'
         raise ValueError(f'{value_desc} not in list')
-
-    def _raise_empty_list_del(self):
-        if not self:
-            raise IndexError('del from empty list')
 
     def __contains__(self, value):
         if not self:
@@ -106,7 +115,7 @@ class Single:
             value_desc = self._raise_value_error(value)
             raise ValueError(f'{value_desc} not in list')
 
-    def insert(self, value):  # O(1)
+    def prepend(self, value):  # O(1)
         head = SingleNode(value)
         if not self:
             self.head = head
@@ -114,7 +123,7 @@ class Single:
             head.next = self.head
             self.head = head
 
-    def insert_at_index(self, index, value):  # O(i)
+    def insert(self, index, value):  # O(i)
         new_node = SingleNode(value)
         if not self:
             self.head = new_node
@@ -132,12 +141,13 @@ class Single:
                 else:
                     new_node.next = current_element
                     self.head = new_node
+                    return
             previous_element = current_element
             current_element = current_element.next
             _index += 1
         previous_element.next = new_node
 
-    def insert_at_end(self, value):  # O(n)
+    def append(self, value):  # O(n)
         new_node = SingleNode(value)
         if not self:
             self.head = new_node
@@ -155,7 +165,6 @@ class Single:
         return value
 
     def remove(self, value):  # worst - O(n)
-        self._raise_empty_list_del()
         current_element = self.head
         previous_element = None
         while current_element:
@@ -171,7 +180,6 @@ class Single:
             self._raise_value_error(value)
 
     def remove_at_index(self, index: int):  # O(i)
-        self._raise_empty_list_del()
         _index = 0
         current_element = self.head
         previous_element = None
@@ -190,7 +198,6 @@ class Single:
         raise IndexError('index out of range')
 
     def remove_last(self):  # O(n)
-        self._raise_empty_list_del()
         current_element = self.head
         previous_element = None
         while current_element.next:
@@ -200,16 +207,6 @@ class Single:
             previous_element.next = None
         else:
             self.head = None
-
-    def reverse(self):
-        current_element = self.head
-        previous_element = None
-        while current_element:
-            next_element = current_element.next
-            current_element.next = previous_element
-            previous_element = current_element
-            current_element = next_element
-        self.head = previous_element
 
     def remove_all_nodes_by_value(self, val):
         current_element = self.head
@@ -224,6 +221,16 @@ class Single:
                 previous_element = current_element
             current_element = current_element.next
         return self.head
+
+    def reverse(self):
+        current_element = self.head
+        previous_element = None
+        while current_element:
+            next_element = current_element.next
+            current_element.next = previous_element
+            previous_element = current_element
+            current_element = next_element
+        self.head = previous_element
 
     def mergesort(self):
         """
@@ -299,9 +306,9 @@ class Single:
                 l_size *= 2
 
     def merge_sorted_lists(self, l2: 'Single'):
-        if self is None:
+        if not self:
             return l2
-        if l2 is None:
+        if not l2:
             return self
 
         cur1, cur2 = self.head, l2.head
@@ -330,4 +337,4 @@ class Single:
         else:
             temp.next = cur1
 
-        return result
+        self.head = result
