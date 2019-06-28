@@ -13,7 +13,8 @@ class SingleNode:
         self.next = None
 
     def __repr__(self):
-        value = f'{self.value!r}' if isinstance(self.value, str) else self.value
+        value = (f'{self.value!r}' if isinstance(self.value, str) else
+                 self.value)
         return f'{self.__class__.__name__}({value})'
 
     def __str__(self):
@@ -253,7 +254,7 @@ class Single:
         while True:  # responsible for increasing sizes of lists to be
             # 'merged'
             l1 = head
-            head, tail = None, None  # reset the pointers from the previous loop
+            head, tail = None, None  # reset pointers from the previous loop
             merge_count = 0  # for knowing when to break the enclosing loop
 
             while l1:  # sets starting points of left and right lists,

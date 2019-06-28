@@ -13,7 +13,7 @@ assorted_strategies = given(st.one_of(
 
 
 class TestSingleNode:
-    
+
     @staticmethod
     def generate_repr_string(value):
         value = f'{value!r}' if isinstance(value, str) else value
@@ -57,8 +57,8 @@ class TestSingle:
 
     def __repr__(self):
         return self.__class__.__name__
-    
-    str_insert_test_value = 'test value'  # for testing insertion, indexing, etc
+
+    str_insert_test_value = 'test value'  # for testing insertion, indexing
 
     integer_lists = st.lists(st.integers())
     str_lists = st.lists(st.text())
@@ -217,5 +217,3 @@ class TestSingle:
         lst2 = Single(sorted(value[value_len_slit:]))
         lst1.merge_sorted_lists(lst2)
         assert lst1 == Single(sorted(value))
-
-
