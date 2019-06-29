@@ -24,7 +24,7 @@ def _merge_sort_in_place(lst: list):
             lst[k] = right_val
             j += 1
         k += 1
-        
+
     while i < left_len:
         lst[k] = left[i]
         i += 1
@@ -40,10 +40,10 @@ def _merge_sort_new(lst: list):
     lst_len = len(lst)
     if lst_len < 2:
         return lst
-    
+
     sorted_lst = [0] * lst_len
     lst_sep = lst_len // 2
-    
+
     left = lst[:lst_sep]
     right = lst[lst_sep:]
     left_len = len(left)
@@ -51,9 +51,9 @@ def _merge_sort_new(lst: list):
 
     left_sorted = _merge_sort_new(lst[:lst_sep])
     right_sorted = _merge_sort_new(lst[lst_sep:])
-    
+
     i, j, k = 0, 0, 0
-    
+
     while i < left_len and j < right_len:
         left_val = left_sorted[i]
         right_val = right_sorted[j]
@@ -65,17 +65,17 @@ def _merge_sort_new(lst: list):
             sorted_lst[k] = right_val
             j += 1
         k += 1
-    
+
     while i < left_len:
         sorted_lst[k] = left_sorted[i]
         i += 1
         k += 1
-    
+
     while j < right_len:
         sorted_lst[k] = right_sorted[j]
         j += 1
         k += 1
-    
+
     return sorted_lst
 
 
