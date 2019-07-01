@@ -6,3 +6,6 @@ venv/
 .pytest_cache
 .hypothesis
 
+.coverage
+htmlcov/
+

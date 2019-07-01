@@ -1,0 +1,8 @@
+[run]
+include =
+    algorithms/
+    structures/
+omit =
+    venv/*
+    */__init__.py
+    tests/*
