@@ -6,4 +6,6 @@ install:
   - pip install -r requirements.txt
 script:
   - flake8
-  - pytest --hypothesis-profile=trial
+  - pytest --hypothesis-profile=trial --cov=./
+after_success:
+  - codecov

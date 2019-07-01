@@ -1,3 +1,5 @@
+codecov==2.0.15
 flake8==3.7.7
 hypothesis==4.24.6
 pytest==4.6.3
+pytest-cov==2.7.1
