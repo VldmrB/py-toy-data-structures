@@ -176,7 +176,7 @@ class TestSingle:
     @given(st.lists(st.integers(), min_size=1, max_size=5, unique=True))
     def test_remove_at_index(self, value):
         value_len = len(value)
-        random_index = random.randint(0, value_len-1)
+        random_index = random.randint(0, value_len - 1)
         lst = Single(value)
         lst.remove_at_index(random_index)
         value.pop(random_index)

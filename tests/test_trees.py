@@ -13,7 +13,7 @@ class TestTree:
     tree_values_in_order = sorted(tree_values)
     tree_values_in_bfs_order = [20, 10, 30, 0, 15, 25, 35, 45]
     tree_values_some = tree_values[::2]
-    tree_values_not_present = [i+1 for i in tree_values_some[::2]]
+    tree_values_not_present = [i + 1 for i in tree_values_some[::2]]
     # comprehensions can't access class scoped vars from within the class except
     # in methods: https://stackoverflow.com/a/13913933/7432972
 
