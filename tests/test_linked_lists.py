@@ -92,12 +92,12 @@ class TestSingle:
             value_len = 1
         assert value_len == len(Single(value))
 
-    @given(st.lists(st.integers(), 1, 5))
+    @given(st.lists(st.integers(), min_size=1, max_size=5))
     def test_contains_descriptor(self, value):
         random_value, lst = self.lst_and_its_random_value(value)
         assert random_value in lst
 
-    @given(st.lists(st.integers(), 1, 5))
+    @given(st.lists(st.integers(), min_size=1, max_size=5))
     def test_index_with_present_value(self, value):
         random_value, lst = self.lst_and_its_random_value(value)
         assert value.index(random_value) == lst.index(random_value)
@@ -149,7 +149,7 @@ class TestSingle:
         lst.append(self.str_insert_test_value)
         assert lst.index(self.str_insert_test_value) == len(lst) - 1
 
-    @given(st.lists(st.integers(), 1, 5))
+    @given(st.lists(st.integers(), min_size=1, max_size=5))
     def test_pop_from_non_empty(self, value):
         lst = Single(value)
         popped = lst.pop()
@@ -161,7 +161,7 @@ class TestSingle:
             Single().pop()
             assert True
 
-    @given(st.lists(st.integers(), 1, 5, unique=True))
+    @given(st.lists(st.integers(), min_size=1, max_size=5, unique=True))
     def test_remove_present_value(self, value):
         random_value, lst = self.lst_and_its_random_value(value)
         lst.remove(random_value)
@@ -173,7 +173,7 @@ class TestSingle:
             lst.remove(self.str_insert_test_value)
             assert True
 
-    @given(st.lists(st.integers(), 1, 5, unique=True))
+    @given(st.lists(st.integers(), min_size=1, max_size=5, unique=True))
     def test_remove_at_index(self, value):
         value_len = len(value)
         random_index = random.randint(0, value_len-1)
@@ -182,14 +182,14 @@ class TestSingle:
         value.pop(random_index)
         assert lst == Single(value)
 
-    @given(st.lists(st.integers(), 1, 10))
+    @given(st.lists(st.integers(), min_size=1, max_size=10))
     def test_remove_last(self, value):
         lst = Single(value)
         lst.remove_last()
         value.pop()
         assert lst == Single(value)
 
-    @given(st.lists(st.integers(0, 9), 1, 10))  # ensuring duplicates
+    @given(st.lists(st.integers(0, 9), min_size=1, max_size=10))  # duplicates
     def test_remove_all_nodes_by_value(self, value):
         random_value, lst = self.lst_and_its_random_value(value)
         lst.remove_all_nodes_by_value(random_value)

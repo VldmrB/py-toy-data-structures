@@ -320,7 +320,6 @@ class Single:
         else:
             result = l2.head
             cur2 = cur2.next
-
         temp = result
 
         while cur1 and cur2:

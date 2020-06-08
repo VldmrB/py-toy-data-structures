@@ -10,8 +10,8 @@ class TestMergesort:
     int_str_lists_and_list_of_lists = given(
         st.one_of(st.lists(st.integers()),
                   st.lists(st.text()),
-                  st.lists(st.lists(st.integers()), 1),
-                  st.lists(st.lists(st.text()), 1)
+                  st.lists(st.lists(st.integers()), min_size=1),
+                  st.lists(st.lists(st.text()), min_size=1)
                   ))
 
     @int_str_lists_and_list_of_lists
