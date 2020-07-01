@@ -1,6 +1,4 @@
 import pytest
-# from hypothesis import given
-# from hypothesis import strategies as st
 
 from structures.trees import Tree
 
